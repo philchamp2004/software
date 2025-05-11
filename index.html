@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professionelle Rechnungssoftware</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4895ef;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4bb543;
+            --danger-color: #ff3333;
+            --warning-color: #f8ac30;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fb;
+            color: var(--dark-color);
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 250px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 20px 0;
+            transition: all 0.3s;
+            position: relative;
+            z-index: 10;
+        }
+
+        .sidebar-header {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-header h3 {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+        }
+
+        .sidebar-header h3 i {
+            font-size: 1.5rem;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            padding: 12px 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .menu-item.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            border-left: 3px solid white;
+        }
+
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px 0 0 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            color: var(--dark-color);
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        /* Invoice Form */
+        .invoice-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        .form-section {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.03);
+            margin-bottom: 20px;
+        }
+
+        .form-section h2 {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            color: var(--primary-color);
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+            outline: none;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-secondary {
+            background-color: #e9ecef;
+            color: var(--dark-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: #dee2e6;
+        }
+
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn-success:hover {
+            background-color: #3a9a33;
+        }
+
+        /* Items Table */
+        .items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .items-table th {
+            background-color: #f8f9fa;
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .items-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .items-table input {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .add-item-btn {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px dashed var(--primary-color);
+            padding: 10px 15px;
+            border-radius: 6px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .add-item-btn:hover {
+            background-color: rgba(67, 97, 238, 0.1);
+        }
+
+        .delete-item-btn {
+            color: var(--danger-color);
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* Invoice Preview */
+        .invoice-preview {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .invoice-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .invoice-logo {
+            max-width: 150px;
+            max-height: 80px;
+        }
+
+        .invoice-title {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+
+        .invoice-number {
+            color: #777;
+            margin-bottom: 20px;
+        }
+
+        .invoice-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .invoice-from, .invoice-to {
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .invoice-from h3, .invoice-to h3 {
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+        .invoice-items {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+
+        .invoice-items th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .invoice-items td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .invoice-items tr:last-child td {
+            border-bottom: none;
+        }
+
+        .invoice-summary {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .summary-table {
+            width: 300px;
+            border-collapse: collapse;
+        }
+
+        .summary-table td {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .summary-table tr:last-child td {
+            border-bottom: none;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .total-row {
+            background-color: #f9f9f9;
+        }
+
+        .invoice-footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            text-align: center;
+            color: #777;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            padding: 12px 20px;
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+
+        .tab.active {
+            border-bottom: 3px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Other Pages */
+        .page-content {
+            display: none;
+        }
+
+        .page-content.active {
+            display: block;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .data-table th {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 15px;
+            text-align: left;
+        }
+
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .data-table tr:hover {
+            background-color: #f5f5f5;
+        }
+
+        .action-btn {
+            padding: 6px 10px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .edit-btn {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        .delete-btn {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #777;
+        }
+
+        /* Animation */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .spinner {
+            animation: spin 1s linear infinite;
+        }
+
+        .send-email-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            flex-direction: column;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .send-email-animation i {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .invoice-form {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                height: auto;
+            }
+            
+            .invoice-details {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h3><i class="fas fa-file-invoice-dollar"></i> RechnungPro</h3>
+            </div>
+            <div class="sidebar-menu">
+                <div class="menu-item active" data-page="new-invoice">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Neue Rechnung</span>
+                </div>
+                <div class="menu-item" data-page="invoice-list">
+                    <i class="fas fa-list"></i>
+                    <span>Rechnungsliste</span>
+                </div>
+                <div class="menu-item" data-page="customers">
+                    <i class="fas fa-users"></i>
+                    <span>Kunden</span>
+                </div>
+                <div class="menu-item" data-page="products">
+                    <i class="fas fa-box-open"></i>
+                    <span>Produkte</span>
+                </div>
+                <div class="menu-item" data-page="reports">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Berichte</span>
+                </div>
+                <div class="menu-item" data-page="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Einstellungen</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <div class="header">
+                <h1 id="page-title">Neue Rechnung erstellen</h1>
+                <div class="user-profile">
+                    <span>Max Mustermann</span>
+                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="User">
+                </div>
+            </div>
+
+            <!-- New Invoice Page -->
+            <div class="page-content active" id="new-invoice">
+                <div class="tabs">
+                    <div class="tab active" data-tab="form">Rechnung erstellen</div>
+                    <div class="tab" data-tab="preview">Vorschau</div>
+                </div>
+
+                <!-- Invoice Form -->
+                <div class="tab-content active" id="form">
+                    <form id="invoiceForm">
+                        <div class="invoice-form">
+                            <div>
+                                <div class="form-section">
+                                    <h2>Rechnungsinformationen</h2>
+                                    <div class="form-group">
+                                        <label for="invoiceNumber">Rechnungsnummer</label>
+                                        <input type="text" id="invoiceNumber" class="form-control" value="INV-2023-001" readonly>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="invoiceDate">Rechnungsdatum</label>
+                                        <input type="date" id="invoiceDate" class="form-control" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="dueDate">Fälligkeitsdatum</label>
+                                        <input type="date" id="dueDate" class="form-control" value="">
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <h2>Kundeninformationen</h2>
+                                    <div class="form-group">
+                                        <label for="customerSelect">Kunde auswählen</label>
+                                        <select id="customerSelect" class="form-control">
+                                            <option value="">Neuen Kunden anlegen</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="customerName">Kundenname</label>
+                                        <input type="text" id="customerName" class="form-control" placeholder="Firma oder Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="customerAddress">Adresse</label>
+                                        <textarea id="customerAddress" class="form-control" rows="3" placeholder="Straße, PLZ, Ort"></textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="customerEmail">E-Mail</label>
+                                        <input type="email" id="customerEmail" class="form-control" placeholder="kunde@beispiel.de">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <div class="form-section">
+                                    <h2>Ihre Informationen</h2>
+                                    <div class="form-group">
+                                        <label for="yourCompany">Ihr Unternehmen</label>
+                                        <input type="text" id="yourCompany" class="form-control" value="Muster GmbH">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="yourAddress">Ihre Adresse</label>
+                                        <textarea id="yourAddress" class="form-control" rows="3">Musterstraße 1
+12345 Musterstadt
+Deutschland</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="yourEmail">Ihre E-Mail</label>
+                                        <input type="email" id="yourEmail" class="form-control" value="info@muster.de">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="yourTax">Steuernummer</label>
+                                        <input type="text" id="yourTax" class="form-control" value="123/456/7890">
+                                    </div>
+                                </div>
+
+                                <div class="form-section">
+                                    <h2>Rechnungspositionen</h2>
+                                    <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                                        <button type="button" class="add-item-btn" id="addItemBtn">
+                                            <i class="fas fa-plus"></i> Position hinzufügen
+                                        </button>
+                                        <button type="button" class="add-item-btn" id="addProductBtn">
+                                            <i class="fas fa-box"></i> Produkt hinzufügen
+                                        </button>
+                                    </div>
+                                    <table class="items-table" id="itemsTable">
+                                        <thead>
+                                            <tr>
+                                                <th>Beschreibung</th>
+                                                <th width="100">Menge</th>
+                                                <th width="120">Preis</th>
+                                                <th width="120">Steuer</th>
+                                                <th width="100">Aktion</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><input type="text" class="form-control item-desc" placeholder="Produkt oder Dienstleistung"></td>
+                                                <td><input type="number" class="form-control item-qty" value="1" min="1"></td>
+                                                <td><input type="number" class="form-control item-price" placeholder="0.00" step="0.01"></td>
+                                                <td>
+                                                    <select class="form-control item-tax">
+                                                        <option value="19">19% MwSt</option>
+                                                        <option value="0">0% (steuerfrei)</option>
+                                                    </select>
+                                                </td>
+                                                <td style="text-align: center;"><button type="button" class="delete-item-btn"><i class="fas fa-trash"></i></button></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-actions" style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                            <button type="button" class="btn btn-secondary" id="saveDraftBtn">
+                                <i class="fas fa-save"></i> Entwurf speichern
+                            </button>
+                            <button type="button" class="btn btn-primary" id="previewBtn">
+                                <i class="fas fa-eye"></i> Vorschau
+                            </button>
+                            <button type="button" class="btn btn-success" id="createInvoiceBtn">
+                                <i class="fas fa-file-pdf"></i> Rechnung erstellen
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Invoice Preview -->
+                <div class="tab-content" id="preview">
+                    <div class="invoice-preview" id="invoicePreview">
+                        <div class="invoice-header">
+                            <div>
+                                <h1 class="invoice-title">RECHNUNG</h1>
+                                <p class="invoice-number">Rechnungsnummer: <span id="previewInvoiceNumber">INV-2023-001</span></p>
+                            </div>
+                            <img src="" alt="Logo" class="invoice-logo" id="previewLogo">
+                        </div>
+
+                        <div class="invoice-details">
+                            <div class="invoice-from">
+                                <h3>Rechnungssteller</h3>
+                                <p id="previewYourCompany">Muster GmbH</p>
+                                <p id="previewYourAddress">Musterstraße 1<br>12345 Musterstadt<br>Deutschland</p>
+                                <p>E-Mail: <span id="previewYourEmail">info@muster.de</span></p>
+                                <p>Steuernummer: <span id="previewYourTax">123/456/7890</span></p>
+                            </div>
+
+                            <div class="invoice-to">
+                                <h3>Rechnungsempfänger</h3>
+                                <p id="previewCustomerName"></p>
+                                <p id="previewCustomerAddress"></p>
+                                <p>E-Mail: <span id="previewCustomerEmail"></span></p>
+                            </div>
+                        </div>
+
+                        <div class="invoice-meta">
+                            <p><strong>Rechnungsdatum:</strong> <span id="previewInvoiceDate"></span></p>
+                            <p><strong>Fälligkeitsdatum:</strong> <span id="previewDueDate"></span></p>
+                        </div>
+
+                        <table class="invoice-items">
+                            <thead>
+                                <tr>
+                                    <th>Beschreibung</th>
+                                    <th>Menge</th>
+                                    <th>Preis</th>
+                                    <th>Steuer</th>
+                                    <th>Betrag</th>
+                                </tr>
+                            </thead>
+                            <tbody id="previewItems">
+                                <!-- Items will be added here dynamically -->
+                            </tbody>
+                        </table>
+
+                        <div class="invoice-summary">
+                            <table class="summary-table">
+                                <tr>
+                                    <td>Nettobetrag:</td>
+                                    <td style="text-align: right;"><span id="subtotal">0.00</span> €</td>
+                                </tr>
+                                <tr>
+                                    <td>MwSt 19%:</td>
+                                    <td style="text-align: right;"><span id="tax19">0.00</span> €</td>
+                                </tr>
+                                <tr class="total-row">
+                                    <td>Gesamtbetrag:</td>
+                                    <td style="text-align: right;"><span id="total">0.00</span> €</td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="invoice-footer">
+                            <p>Vielen Dank für Ihren Auftrag! Bitte überweisen Sie den Betrag innerhalb von 14 Tagen auf unser Konto.</p>
+                            <p id="previewBankDetails">Bankverbindung: Musterbank • IBAN: DE00 1234 5678 9012 3456 78 • BIC: MUSTERDE123</p>
+                        </div>
+                    </div>
+
+                    <div class="form-actions" style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                        <button type="button" class="btn btn-secondary back-to-form-btn">
+                            <i class="fas fa-edit"></i> Zurück zur Bearbeitung
+                        </button>
+                        <button type="button" class="btn btn-primary" id="sendEmailBtn">
+                            <i class="fas fa-envelope"></i> Per Email versenden
+                        </button>
+                        <button type="button" class="btn btn-success" id="downloadPdfBtn">
+                            <i class="fas fa-file-pdf"></i> PDF herunterladen
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Invoice List Page -->
+            <div class="page-content" id="invoice-list">
+                <div class="form-actions" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                    <div>
+                        <button type="button" class="btn btn-primary">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                        <button type="button" class="btn btn-secondary">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-success" id="newInvoiceFromListBtn">
+                            <i class="fas fa-plus"></i> Neue Rechnung
+                        </button>
+                    </div>
+                </div>
+
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Rechnungsnummer</th>
+                            <th>Datum</th>
+                            <th>Kunde</th>
+                            <th>Betrag</th>
+                            <th>Status</th>
+                            <th>Aktionen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>INV-2023-105</td>
+                            <td>15.05.2023</td>
+                            <td>Beispiel GmbH</td>
+                            <td>1.245,00 €</td>
+                            <td><span style="color: var(--success-color);">Bezahlt</span></td>
+                            <td>
+                                <button class="action-btn edit-btn"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>INV-2023-104</td>
+                            <td>10.05.2023</td>
+                            <td>Muster AG</td>
+                            <td>845,50 €</td>
+                            <td><span style="color: var(--warning-color);">Fällig</span></td>
+                            <td>
+                                <button class="action-btn edit-btn"><i class="fas fa-eye"></i></button>
+                                <button class="action-btn edit-btn"><i class="fas fa-edit"></i></button>
+                                <button class="action-btn delete-btn"><i class="fas fa-trash"></i></button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Customers Page -->
+            <div class="page-content" id="customers">
+                <div class="form-actions" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                    <div>
+                        <button type="button" class="btn btn-primary" id="filterCustomersBtn">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="exportCustomersBtn">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-success" id="addCustomerBtn">
+                            <i class="fas fa-plus"></i> Neuer Kunde
+                        </button>
+                    </div>
+                </div>
+
+                <table class="data-table" id="customersTable">
+                    <thead>
+                        <tr>
+                            <th>Kundennummer</th>
+                            <th>Name</th>
+                            <th>Adresse</th>
+                            <th>E-Mail</th>
+                            <th>Aktionen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Customers will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Products Page -->
+            <div class="page-content" id="products">
+                <div class="form-actions" style="display: flex; justify-content: space-between; margin-bottom: 20px;">
+                    <div>
+                        <button type="button" class="btn btn-primary" id="filterProductsBtn">
+                            <i class="fas fa-filter"></i> Filter
+                        </button>
+                        <button type="button" class="btn btn-secondary" id="exportProductsBtn">
+                            <i class="fas fa-download"></i> Export
+                        </button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-success" id="addProductBtn2">
+                            <i class="fas fa-plus"></i> Neues Produkt
+                        </button>
+                    </div>
+                </div>
+
+                <table class="data-table" id="productsTable">
+                    <thead>
+                        <tr>
+                            <th>Artikelnummer</th>
+                            <th>Bezeichnung</th>
+                            <th>Preis</th>
+                            <th>Steuersatz</th>
+                            <th>Aktionen</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Products will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Reports Page -->
+            <div class="page-content" id="reports">
+                <h2>Berichte und Statistiken</h2>
+                <div class="form-section" style="margin-top: 20px;">
+                    <h2>Umsatz nach Monat</h2>
+                    <div style="background-color: #f9f9f9; padding: 20px; border-radius: 8px; height: 300px; display: flex; align-items: center; justify-content: center;">
+                        <p style="color: #777;">Diagramm würde hier angezeigt werden</p>
+                    </div>
+                </div>
+
+                <div class="form-section" style="margin-top: 20px;">
+                    <h2>Top Kunden</h2>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Kunde</th>
+                                <th>Anzahl Rechnungen</th>
+                                <th>Gesamtumsatz</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Beispiel GmbH</td>
+                                <td>12</td>
+                                <td>14.856,00 €</td>
+                            </tr>
+                            <tr>
+                                <td>Muster AG</td>
+                                <td>8</td>
+                                <td>9.245,50 €</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Settings Page -->
+            <div class="page-content" id="settings">
+                <h2>Einstellungen</h2>
+                
+                <div class="form-section" style="margin-top: 20px;">
+                    <h2>Firmendaten</h2>
+                    <div class="form-group">
+                        <label for="settingsCompanyName">Firmenname</label>
+                        <input type="text" id="settingsCompanyName" class="form-control" value="Muster GmbH">
+                    </div>
+                    <div class="form-group">
+                        <label for="settingsAddress">Adresse</label>
+                        <textarea id="settingsAddress" class="form-control" rows="3">Musterstraße 1
+12345 Musterstadt
+Deutschland</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="settingsTaxNumber">Steuernummer</label>
+                        <input type="text" id="settingsTaxNumber" class="form-control" value="123/456/7890">
+                    </div>
+                    <div class="form-group">
+                        <label for="settingsBank">Bankverbindung</label>
+                        <textarea id="settingsBank" class="form-control" rows="3">Musterbank
+IBAN: DE00 1234 5678 9012 3456 78
+BIC: MUSTERDE123</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="settingsLogo">Firmenlogo</label>
+                        <input type="file" id="settingsLogo" class="form-control" accept="image/*">
+                        <small>Empfohlene Größe: 150x50px</small>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="saveCompanySettingsBtn">
+                        <i class="fas fa-save"></i> Speichern
+                    </button>
+                </div>
+
+                <div class="form-section" style="margin-top: 20px;">
+                    <h2>Rechnungseinstellungen</h2>
+                    <div class="form-group">
+                        <label for="settingsInvoicePrefix">Rechnungsnummer Präfix</label>
+                        <input type="text" id="settingsInvoicePrefix" class="form-control" value="INV-">
+                    </div>
+                    <div class="form-group">
+                        <label for="settingsInvoiceStart">Startnummer</label>
+                        <input type="number" id="settingsInvoiceStart" class="form-control" value="1001">
+                    </div>
+                    <div class="form-group">
+                        <label for="settingsPaymentTerms">Standardzahlungsbedingungen (Tage)</label>
+                        <input type="number" id="settingsPaymentTerms" class="form-control" value="14">
+                    </div>
+                    <button type="button" class="btn btn-primary" id="saveInvoiceSettingsBtn">
+                        <i class="fas fa-save"></i> Speichern
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Customer Modal -->
+    <div class="modal" id="customerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="customerModalTitle">Neuer Kunde</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="customerForm">
+                <input type="hidden" id="customerId">
+                <div class="form-group">
+                    <label for="modalCustomerName">Kundenname</label>
+                    <input type="text" id="modalCustomerName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="modalCustomerAddress">Adresse</label>
+                    <textarea id="modalCustomerAddress" class="form-control" rows="3" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="modalCustomerEmail">E-Mail</label>
+                    <input type="email" id="modalCustomerEmail" class="form-control" required>
+                </div>
+                <div class="form-actions" style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button type="button" class="btn btn-secondary close-modal">Abbrechen</button>
+                    <button type="submit" class="btn btn-primary">Speichern</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Product Modal -->
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="productModalTitle">Neues Produkt</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <form id="productForm">
+                <input type="hidden" id="productId">
+                <div class="form-group">
+                    <label for="modalProductName">Produktname</label>
+                    <input type="text" id="modalProductName" class="form-control" required>
+                </div>
+                <div class="form-group">
+                    <label for="modalProductPrice">Preis (€)</label>
+                    <input type="number" id="modalProductPrice" class="form-control" step="0.01" required>
+                </div>
+                <div class="form-group">
+                    <label for="modalProductTax">Steuersatz</label>
+                    <select id="modalProductTax" class="form-control" required>
+                        <option value="19">19% MwSt</option>
+                        <option value="0">0% (steuerfrei)</option>
+                    </select>
+                </div>
+                <div class="form-actions" style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px;">
+                    <button type="button" class="btn btn-secondary close-modal">Abbrechen</button>
+                    <button type="submit" class="btn btn-primary">Speichern</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Email Sending Animation -->
+    <div class="send-email-animation" id="emailAnimation" style="display: none;">
+        <i class="fas fa-paper-plane"></i>
+        <p>Rechnung wird versendet...</p>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize data
+            let customers = JSON.parse(localStorage.getItem('customers')) || [];
+            let products = JSON.parse(localStorage.getItem('products')) || [];
+            let settings = JSON.parse(localStorage.getItem('settings')) || {
+                companyName: 'Muster GmbH',
+                address: 'Musterstraße 1\n12345 Musterstadt\nDeutschland',
+                taxNumber: '123/456/7890',
+                bankDetails: 'Musterbank\nIBAN: DE00 1234 5678 9012 3456 78\nBIC: MUSTERDE123',
+                logo: '',
+                invoicePrefix: 'INV-',
+                invoiceStart: 1001,
+                paymentTerms: 14
+            };
+
+            // Set today's date as default
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('invoiceDate').value = today;
+            
+            // Set due date based on payment terms
+            const dueDate = new Date();
+            dueDate.setDate(dueDate.getDate() + settings.paymentTerms);
+            document.getElementById('dueDate').value = dueDate.toISOString().split('T')[0];
+
+            // Generate invoice number
+            generateInvoiceNumber();
+
+            // Load settings into form
+            loadSettings();
+
+            // Load customers and products
+            loadCustomers();
+            loadProducts();
+
+            // Tab functionality
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs and contents
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab and corresponding content
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+
+            // Back to form button
+            document.querySelector('.back-to-form-btn').addEventListener('click', function() {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                document.querySelector('[data-tab="form"]').classList.add('active');
+                document.getElementById('form').classList.add('active');
+            });
+
+            // Preview button
+            document.getElementById('previewBtn').addEventListener('click', function() {
+                updatePreview();
+                
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                document.querySelector('[data-tab="preview"]').classList.add('active');
+                document.getElementById('preview').classList.add('active');
+            });
+
+            // Add item button
+            document.getElementById('addItemBtn').addEventListener('click', function() {
+                addNewItemRow();
+            });
+
+            // Add product to invoice button
+            document.getElementById('addProductBtn').addEventListener('click', function() {
+                showProductSelection();
+            });
+
+            // Customer select change
+            document.getElementById('customerSelect').addEventListener('change', function() {
+                const customerId = this.value;
+                if (customerId) {
+                    const customer = customers.find(c => c.id == customerId);
+                    if (customer) {
+                        document.getElementById('customerName').value = customer.name;
+                        document.getElementById('customerAddress').value = customer.address;
+                        document.getElementById('customerEmail').value = customer.email;
+                    }
+                }
+            });
+
+            // Add event listeners to initial delete buttons
+            document.querySelectorAll('.delete-item-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (document.querySelectorAll('#itemsTable tbody tr').length > 1) {
+                        this.closest('tr').remove();
+                    } else {
+                        alert('Mindestens eine Position muss vorhanden sein.');
+                    }
+                });
+            });
+
+            // Save draft button
+            document.getElementById('saveDraftBtn').addEventListener('click', function() {
+                alert('Entwurf wurde gespeichert!');
+                // In a real application, you would save to localStorage or a database here
+            });
+
+            // Create invoice button
+            document.getElementById('createInvoiceBtn').addEventListener('click', function() {
+                updatePreview();
+                
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                
+                document.querySelector('[data-tab="preview"]').classList.add('active');
+                document.getElementById('preview').classList.add('active');
+            });
+
+            // Download PDF button
+            document.getElementById('downloadPdfBtn').addEventListener('click', function() {
+                const element = document.getElementById('invoicePreview');
+                const opt = {
+                    margin: 10,
+                    filename: 'Rechnung_' + document.getElementById('invoiceNumber').value + '.pdf',
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: { scale: 2 },
+                    jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+
+                // Generate PDF
+                html2pdf().from(element).set(opt).save();
+            });
+
+            // Send email button
+            document.getElementById('sendEmailBtn').addEventListener('click', function() {
+                const customerEmail = document.getElementById('customerEmail').value;
+                if (!customerEmail) {
+                    alert('Bitte geben Sie eine Kunden-E-Mail-Adresse ein.');
+                    return;
+                }
+
+                // Show animation
+                document.getElementById('emailAnimation').style.display = 'flex';
+                
+                // Simulate email sending
+                setTimeout(function() {
+                    document.getElementById('emailAnimation').style.display = 'none';
+                    alert('Rechnung wurde erfolgreich an ' + customerEmail + ' versendet!');
+                }, 2000);
+            });
+
+            // Menu navigation
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    // Update active menu item
+                    document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Update page title
+                    const pageTitle = this.querySelector('span').textContent;
+                    document.getElementById('page-title').textContent = pageTitle;
+                    
+                    // Show selected page
+                    const pageId = this.getAttribute('data-page');
+                    document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+                    document.getElementById(pageId).classList.add('active');
+                });
+            });
+
+            // New invoice from list button
+            document.getElementById('newInvoiceFromListBtn').addEventListener('click', function() {
+                document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
+                document.querySelector('[data-page="new-invoice"]').classList.add('active');
+                
+                document.getElementById('page-title').textContent = 'Neue Rechnung erstellen';
+                document.querySelectorAll('.page-content').forEach(p => p.classList.remove('active'));
+                document.getElementById('new-invoice').classList.add('active');
+                
+                // Reset form
+                document.getElementById('invoiceForm').reset();
+                generateInvoiceNumber();
+                
+                // Set today's date
+                document.getElementById('invoiceDate').value = today;
+                const dueDate = new Date();
+                dueDate.setDate(dueDate.getDate() + settings.paymentTerms);
+                document.getElementById('dueDate').value = dueDate.toISOString().split('T')[0];
+                
+                // Clear items except first row
+                const tbody = document.querySelector('#itemsTable tbody');
+                while (tbody.rows.length > 1) {
+                    tbody.deleteRow(1);
+                }
+                
+                // Reset first row
+                const firstRow = tbody.rows[0];
+                firstRow.querySelector('.item-desc').value = '';
+                firstRow.querySelector('.item-qty').value = 1;
+                firstRow.querySelector('.item-price').value = '';
+                firstRow.querySelector('.item-tax').value = '19';
+            });
+
+            // Add customer button
+            document.getElementById('addCustomerBtn').addEventListener('click', function() {
+                openCustomerModal();
+            });
+
+            // Add product button (products page)
+            document.getElementById('addProductBtn2').addEventListener('click', function() {
+                openProductModal();
+            });
+
+            // Save company settings
+            document.getElementById('saveCompanySettingsBtn').addEventListener('click', function() {
+                saveCompanySettings();
+            });
+
+            // Save invoice settings
+            document.getElementById('saveInvoiceSettingsBtn').addEventListener('click', function() {
+                saveInvoiceSettings();
+            });
+
+            // Close modal buttons
+            document.querySelectorAll('.close-modal').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
+                });
+            });
+
+            // Customer form submit
+            document.getElementById('customerForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveCustomer();
+            });
+
+            // Product form submit
+            document.getElementById('productForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                saveProduct();
+            });
+
+            // Logo upload
+            document.getElementById('settingsLogo').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        settings.logo = event.target.result;
+                        localStorage.setItem('settings', JSON.stringify(settings));
+                        document.getElementById('previewLogo').src = settings.logo;
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            // Update preview function
+            function updatePreview() {
+                // Basic info
+                document.getElementById('previewInvoiceNumber').textContent = document.getElementById('invoiceNumber').value;
+                document.getElementById('previewInvoiceDate').textContent = formatDate(document.getElementById('invoiceDate').value);
+                document.getElementById('previewDueDate').textContent = formatDate(document.getElementById('dueDate').value);
+                
+                // Your info
+                document.getElementById('previewYourCompany').textContent = document.getElementById('yourCompany').value;
+                document.getElementById('previewYourAddress').innerHTML = document.getElementById('yourAddress').value.replace(/\n/g, '<br>');
+                document.getElementById('previewYourEmail').textContent = document.getElementById('yourEmail').value;
+                document.getElementById('previewYourTax').textContent = document.getElementById('yourTax').value;
+                document.getElementById('previewBankDetails').innerHTML = settings.bankDetails.replace(/\n/g, '<br>');
+                
+                // Logo
+                document.getElementById('previewLogo').src = settings.logo;
+                
+                // Customer info
+                document.getElementById('previewCustomerName').textContent = document.getElementById('customerName').value;
+                document.getElementById('previewCustomerAddress').innerHTML = document.getElementById('customerAddress').value.replace(/\n/g, '<br>');
+                document.getElementById('previewCustomerEmail').textContent = document.getElementById('customerEmail').value;
+                
+                // Items
+                const itemsContainer = document.getElementById('previewItems');
+                itemsContainer.innerHTML = '';
+                
+                let subtotal = 0;
+                let tax19 = 0;
+                
+                document.querySelectorAll('#itemsTable tbody tr').forEach(row => {
+                    const desc = row.querySelector('.item-desc').value;
+                    const qty = parseFloat(row.querySelector('.item-qty').value) || 0;
+                    const price = parseFloat(row.querySelector('.item-price').value) || 0;
+                    const taxRate = parseFloat(row.querySelector('.item-tax').value) || 0;
+                    
+                    const amount = qty * price;
+                    subtotal += amount;
+                    
+                    if (taxRate === 19) {
+                        tax19 += amount * 0.19;
+                    }
+                    
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td>${desc || 'Keine Beschreibung'}</td>
+                        <td>${qty}</td>
+                        <td>${price.toFixed(2)} €</td>
+                        <td>${taxRate}%</td>
+                        <td>${amount.toFixed(2)} €</td>
+                    `;
+                    itemsContainer.appendChild(newRow);
+                });
+                
+                const total = subtotal + tax19;
+                
+                // Update totals
+                document.getElementById('subtotal').textContent = subtotal.toFixed(2);
+                document.getElementById('tax19').textContent = tax19.toFixed(2);
+                document.getElementById('total').textContent = total.toFixed(2);
+            }
+            
+            // Helper function to format date
+            function formatDate(dateString) {
+                if (!dateString) return '';
+                
+                const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+                return new Date(dateString).toLocaleDateString('de-DE', options);
+            }
+
+            // Generate invoice number
+            function generateInvoiceNumber() {
+                const prefix = settings.invoicePrefix;
+                const year = new Date().getFullYear();
+                const lastNumber = localStorage.getItem('lastInvoiceNumber') || settings.invoiceStart;
+                const newNumber = parseInt(lastNumber) + 1;
+                
+                const invoiceNumber = `${prefix}${year}-${newNumber.toString().padStart(3, '0')}`;
+                document.getElementById('invoiceNumber').value = invoiceNumber;
+                
+                // Store the last used number (in a real app, you'd use a database)
+                localStorage.setItem('lastInvoiceNumber', newNumber);
+            }
+
+            // Load settings
+            function loadSettings() {
+                document.getElementById('settingsCompanyName').value = settings.companyName;
+                document.getElementById('settingsAddress').value = settings.address;
+                document.getElementById('settingsTaxNumber').value = settings.taxNumber;
+                document.getElementById('settingsBank').value = settings.bankDetails;
+                document.getElementById('settingsInvoicePrefix').value = settings.invoicePrefix;
+                document.getElementById('settingsInvoiceStart').value = settings.invoiceStart;
+                document.getElementById('settingsPaymentTerms').value = settings.paymentTerms;
+                
+                // Apply settings to invoice form
+                document.getElementById('yourCompany').value = settings.companyName;
+                document.getElementById('yourAddress').value = settings.address;
+                document.getElementById('yourTax').value = settings.taxNumber;
+                
+                // Set logo if exists
+                if (settings.logo) {
+                    document.getElementById('previewLogo').src = settings.logo;
+                }
+            }
+
+            // Save company settings
+            function saveCompanySettings() {
+                settings.companyName = document.getElementById('settingsCompanyName').value;
+                settings.address = document.getElementById('settingsAddress').value;
+                settings.taxNumber = document.getElementById('settingsTaxNumber').value;
+                settings.bankDetails = document.getElementById('settingsBank').value;
+                
+                localStorage.setItem('settings', JSON.stringify(settings));
+                
+                // Update invoice form
+                document.getElementById('yourCompany').value = settings.companyName;
+                document.getElementById('yourAddress').value = settings.address;
+                document.getElementById('yourTax').value = settings.taxNumber;
+                
+                alert('Firmeneinstellungen wurden gespeichert!');
+            }
+
+            // Save invoice settings
+            function saveInvoiceSettings() {
+                settings.invoicePrefix = document.getElementById('settingsInvoicePrefix').value;
+                settings.invoiceStart = parseInt(document.getElementById('settingsInvoiceStart').value);
+                settings.paymentTerms = parseInt(document.getElementById('settingsPaymentTerms').value);
+                
+                localStorage.setItem('settings', JSON.stringify(settings));
+                
+                alert('Rechnungseinstellungen wurden gespeichert!');
+            }
+
+            // Load customers
+            function loadCustomers() {
+                const customerSelect = document.getElementById('customerSelect');
+                customerSelect.innerHTML = '<option value="">Neuen Kunden anlegen</option>';
+                
+                const customersTable = document.querySelector('#customersTable tbody');
+                customersTable.innerHTML = '';
+                
+                customers.forEach(customer => {
+                    // Add to select
+                    const option = document.createElement('option');
+                    option.value = customer.id;
+                    option.textContent = customer.name;
+                    customerSelect.appendChild(option);
+                    
+                    // Add to table
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>C-${customer.id.toString().padStart(4, '0')}</td>
+                        <td>${customer.name}</td>
+                        <td>${customer.address.replace(/\n/g, ', ')}</td>
+                        <td>${customer.email}</td>
+                        <td>
+                            <button class="action-btn edit-btn" data-id="${customer.id}"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn delete-btn" data-id="${customer.id}"><i class="fas fa-trash"></i></button>
+                        </td>
+                    `;
+                    customersTable.appendChild(row);
+                });
+                
+                // Add event listeners to edit and delete buttons
+                document.querySelectorAll('.edit-btn[data-id]').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const customerId = this.getAttribute('data-id');
+                        editCustomer(customerId);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-btn[data-id]').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const customerId = this.getAttribute('data-id');
+                        deleteCustomer(customerId);
+                    });
+                });
+            }
+
+            // Load products
+            function loadProducts() {
+                const productsTable = document.querySelector('#productsTable tbody');
+                productsTable.innerHTML = '';
+                
+                products.forEach(product => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>P-${product.id.toString().padStart(4, '0')}</td>
+                        <td>${product.name}</td>
+                        <td>${product.price.toFixed(2)} €</td>
+                        <td>${product.tax}%</td>
+                        <td>
+                            <button class="action-btn edit-btn" data-id="${product.id}"><i class="fas fa-edit"></i></button>
+                            <button class="action-btn delete-btn" data-id="${product.id}"><i class="fas fa-trash"></i></button>
+                            <button class="action-btn" style="background-color: var(--primary-color); color: white;" data-id="${product.id}"><i class="fas fa-plus"></i> Zu Rechnung</button>
+                        </td>
+                    `;
+                    productsTable.appendChild(row);
+                });
+                
+                // Add event listeners to buttons
+                document.querySelectorAll('.edit-btn[data-id]').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const productId = this.getAttribute('data-id');
+                        editProduct(productId);
+                    });
+                });
+                
+                document.querySelectorAll('.delete-btn[data-id]').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const productId = this.getAttribute('data-id');
+                        deleteProduct(productId);
+                    });
+                });
+                
+                document.querySelectorAll('.action-btn[data-id]').forEach(btn => {
+                    if (btn.textContent.includes('Zu Rechnung')) {
+                        btn.addEventListener('click', function() {
+                            const productId = this.getAttribute('data-id');
+                            addProductToInvoice(productId);
+                        });
+                    }
+                });
+            }
+
+            // Open customer modal
+            function openCustomerModal(customer = null) {
+                const modal = document.getElementById('customerModal');
+                const form = document.getElementById('customerForm');
+                
+                if (customer) {
+                    document.getElementById('customerModalTitle').textContent = 'Kunde bearbeiten';
+                    document.getElementById('customerId').value = customer.id;
+                    document.getElementById('modalCustomerName').value = customer.name;
+                    document.getElementById('modalCustomerAddress').value = customer.address;
+                    document.getElementById('modalCustomerEmail').value = customer.email;
+                } else {
+                    document.getElementById('customerModalTitle').textContent = 'Neuer Kunde';
+                    form.reset();
+                    document.getElementById('customerId').value = '';
+                }
+                
+                modal.style.display = 'flex';
+            }
+
+            // Open product modal
+            function openProductModal(product = null) {
+                const modal = document.getElementById('productModal');
+                const form = document.getElementById('productForm');
+                
+                if (product) {
+                    document.getElementById('productModalTitle').textContent = 'Produkt bearbeiten';
+                    document.getElementById('productId').value = product.id;
+                    document.getElementById('modalProductName').value = product.name;
+                    document.getElementById('modalProductPrice').value = product.price;
+                    document.getElementById('modalProductTax').value = product.tax;
+                } else {
+                    document.getElementById('productModalTitle').textContent = 'Neues Produkt';
+                    form.reset();
+                    document.getElementById('productId').value = '';
+                }
+                
+                modal.style.display = 'flex';
+            }
+
+            // Save customer
+            function saveCustomer() {
+                const id = document.getElementById('customerId').value || Date.now();
+                const name = document.getElementById('modalCustomerName').value;
+                const address = document.getElementById('modalCustomerAddress').value;
+                const email = document.getElementById('modalCustomerEmail').value;
+                
+                const customer = { id, name, address, email };
+                
+                if (document.getElementById('customerId').value) {
+                    // Update existing customer
+                    const index = customers.findIndex(c => c.id == id);
+                    if (index !== -1) {
+                        customers[index] = customer;
+                    }
+                } else {
+                    // Add new customer
+                    customers.push(customer);
+                }
+                
+                localStorage.setItem('customers', JSON.stringify(customers));
+                loadCustomers();
+                document.getElementById('customerModal').style.display = 'none';
+                
+                // Select the customer in the invoice form
+                document.getElementById('customerSelect').value = id;
+                document.getElementById('customerName').value = name;
+                document.getElementById('customerAddress').value = address;
+                document.getElementById('customerEmail').value = email;
+            }
+
+            // Save product
+            function saveProduct() {
+                const id = document.getElementById('productId').value || Date.now();
+                const name = document.getElementById('modalProductName').value;
+                const price = parseFloat(document.getElementById('modalProductPrice').value);
+                const tax = parseInt(document.getElementById('modalProductTax').value);
+                
+                const product = { id, name, price, tax };
+                
+                if (document.getElementById('productId').value) {
+                    // Update existing product
+                    const index = products.findIndex(p => p.id == id);
+                    if (index !== -1) {
+                        products[index] = product;
+                    }
+                } else {
+                    // Add new product
+                    products.push(product);
+                }
+                
+                localStorage.setItem('products', JSON.stringify(products));
+                loadProducts();
+                document.getElementById('productModal').style.display = 'none';
+            }
+
+            // Edit customer
+            function editCustomer(customerId) {
+                const customer = customers.find(c => c.id == customerId);
+                if (customer) {
+                    openCustomerModal(customer);
+                }
+            }
+
+            // Edit product
+            function editProduct(productId) {
+                const product = products.find(p => p.id == productId);
+                if (product) {
+                    openProductModal(product);
+                }
+            }
+
+            // Delete customer
+            function deleteCustomer(customerId) {
+                if (confirm('Möchten Sie diesen Kunden wirklich löschen?')) {
+                    customers = customers.filter(c => c.id != customerId);
+                    localStorage.setItem('customers', JSON.stringify(customers));
+                    loadCustomers();
+                }
+            }
+
+            // Delete product
+            function deleteProduct(productId) {
+                if (confirm('Möchten Sie dieses Produkt wirklich löschen?')) {
+                    products = products.filter(p => p.id != productId);
+                    localStorage.setItem('products', JSON.stringify(products));
+                    loadProducts();
+                }
+            }
+
+            // Add new item row
+            function addNewItemRow() {
+                const tbody = document.querySelector('#itemsTable tbody');
+                const newRow = document.createElement('tr');
+                newRow.innerHTML = `
+                    <td><input type="text" class="form-control item-desc" placeholder="Produkt oder Dienstleistung"></td>
+                    <td><input type="number" class="form-control item-qty" value="1" min="1"></td>
+                    <td><input type="number" class="form-control item-price" placeholder="0.00" step="0.01"></td>
+                    <td>
+                        <select class="form-control item-tax">
+                            <option value="19">19% MwSt</option>
+                            <option value="0">0% (steuerfrei)</option>
+                        </select>
+                    </td>
+                    <td style="text-align: center;"><button type="button" class="delete-item-btn"><i class="fas fa-trash"></i></button></td>
+                `;
+                tbody.appendChild(newRow);
+                
+                // Add event listener to new delete button
+                newRow.querySelector('.delete-item-btn').addEventListener('click', function() {
+                    if (document.querySelectorAll('#itemsTable tbody tr').length > 1) {
+                        this.closest('tr').remove();
+                    } else {
+                        alert('Mindestens eine Position muss vorhanden sein.');
+                    }
+                });
+            }
+
+            // Show product selection
+            function showProductSelection() {
+                if (products.length === 0) {
+                    alert('Keine Produkte vorhanden. Bitte legen Sie zuerst Produkte an.');
+                    document.querySelector('[data-page="products"]').click();
+                    return;
+                }
+                
+                const modal = document.createElement('div');
+                modal.className = 'modal';
+                modal.style.display = 'flex';
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Produkt auswählen</h3>
+                            <button class="close-modal">&times;</button>
+                        </div>
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Produkt</th>
+                                    <th>Preis</th>
+                                    <th>Steuersatz</th>
+                                    <th>Aktion</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${products.map(product => `
+                                    <tr>
+                                        <td>${product.name}</td>
+                                        <td>${product.price.toFixed(2)} €</td>
+                                        <td>${product.tax}%</td>
+                                        <td><button class="btn btn-primary select-product-btn" data-id="${product.id}">Auswählen</button></td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                
+                // Close modal
+                modal.querySelector('.close-modal').addEventListener('click', function() {
+                    modal.remove();
+                });
+                
+                // Select product
+                modal.querySelectorAll('.select-product-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const productId = this.getAttribute('data-id');
+                        addProductToInvoice(productId);
+                        modal.remove();
+                    });
+                });
+            }
+
+            // Add product to invoice
+            function addProductToInvoice(productId) {
+                const product = products.find(p => p.id == productId);
+                if (product) {
+                    const tbody = document.querySelector('#itemsTable tbody');
+                    const newRow = document.createElement('tr');
+                    newRow.innerHTML = `
+                        <td><input type="text" class="form-control item-desc" value="${product.name}"></td>
+                        <td><input type="number" class="form-control item-qty" value="1" min="1"></td>
+                        <td><input type="number" class="form-control item-price" value="${product.price.toFixed(2)}" step="0.01"></td>
+                        <td>
+                            <select class="form-control item-tax">
+                                <option value="19" ${product.tax === 19 ? 'selected' : ''}>19% MwSt</option>
+                                <option value="0" ${product.tax === 0 ? 'selected' : ''}>0% (steuerfrei)</option>
+                            </select>
+                        </td>
+                        <td style="text-align: center;"><button type="button" class="delete-item-btn"><i class="fas fa-trash"></i></button></td>
+                    `;
+                    tbody.appendChild(newRow);
+                    
+                    // Add event listener to new delete button
+                    newRow.querySelector('.delete-item-btn').addEventListener('click', function() {
+                        if (document.querySelectorAll('#itemsTable tbody tr').length > 1) {
+                            this.closest('tr').remove();
+                        } else {
+                            alert('Mindestens eine Position muss vorhanden sein.');
+                        }
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
