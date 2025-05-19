@@ -1,0 +1,2422 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXA Event Solutions | Premium Veranstaltungstechnik</title>
+    <meta name="description" content="Innovative Eventtechnik-Lösungen von NEXA - Licht, Ton, Bühnenbau und kreative Inszenierungen für unvergessliche Events">
+    
+    <!-- Favicon -->
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #0a0a0a;
+            --primary-light: #1a1a1a;
+            --secondary: #ff4d00;
+            --secondary-light: #ff6a1a;
+            --accent: #00a8ff;
+            --light: #ffffff;
+            --dark: #000000;
+            --gray: #e0e0e0;
+            --dark-gray: #5a5a5a;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            line-height: 1.7;
+            color: var(--dark);
+            background-color: var(--light);
+            overflow-x: hidden;
+            font-weight: 400;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            line-height: 1.2;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
+        a:hover {
+            color: var(--secondary);
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 30px;
+        }
+        
+        /* Header */
+        header {
+            background-color: var(--primary);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            transition: all 0.4s ease;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        header.scrolled {
+            background-color: rgba(10, 10, 10, 0.98);
+            backdrop-filter: blur(10px);
+            padding: 10px 0;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            color: var(--light);
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+            font-weight: 800;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+        
+        nav ul li {
+            margin-left: 35px;
+            position: relative;
+        }
+        
+        nav ul li a {
+            color: var(--light);
+            font-weight: 500;
+            font-size: 1.05rem;
+            letter-spacing: 0.5px;
+            padding: 8px 0;
+        }
+        
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            bottom: 0;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+        
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+        
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+            cursor: pointer;
+            z-index: 1001;
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            min-height: 800px;
+            position: relative;
+            overflow: hidden;
+            color: white;
+            text-align: center;
+            display: flex;
+            align-items: center;
+        }
+        
+        .hero-video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1;
+        }
+        
+        .hero-slideshow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            object-fit: cover;
+        }
+        
+        .hero-slideshow.active {
+            opacity: 1;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, rgba(0, 0, 0, 0.8) 100%);
+            z-index: -1;
+        }
+        
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 30px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero h1 {
+            font-size: 4.5rem;
+            margin-bottom: 25px;
+            line-height: 1.1;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .hero h1 span {
+            color: var(--secondary);
+            display: block;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 40px;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 40px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: none;
+            cursor: pointer;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(255, 77, 0, 0.2);
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        .btn:hover::before {
+            left: 100%;
+        }
+        
+        .btn:hover {
+            background: var(--secondary-light);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(255, 77, 0, 0.3);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 2px solid white;
+            color: white;
+            margin-left: 20px;
+            box-shadow: none;
+        }
+        
+        .btn-outline:hover {
+            background: white;
+            color: var(--primary);
+            border-color: white;
+        }
+        
+        .btn i {
+            margin-left: 10px;
+            font-size: 0.9rem;
+        }
+        
+        /* Services Section */
+        .section {
+            padding: 120px 0;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        
+        .section-title h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .section-title h2::after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: var(--secondary);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .section-title p {
+            color: var(--dark-gray);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+        }
+        
+        .service-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            opacity: 0;
+            z-index: -1;
+            transition: opacity 0.4s ease;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border-color: transparent;
+        }
+        
+        .service-card:hover::before {
+            opacity: 1;
+        }
+        
+        .service-card:hover .service-content h3,
+        .service-card:hover .service-content p,
+        .service-card:hover .service-link {
+            color: white;
+        }
+        
+        .service-icon {
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: var(--secondary);
+            font-size: 6rem;
+            transition: all 0.4s ease;
+        }
+        
+        .service-card:hover .service-icon {
+            background: transparent;
+            color: white;
+        }
+        
+        .service-content {
+            padding: 30px;
+        }
+        
+        .service-content h3 {
+            font-size: 1.6rem;
+            margin-bottom: 15px;
+            color: var(--primary);
+            transition: color 0.3s ease;
+        }
+        
+        .service-content p {
+            color: var(--dark-gray);
+            margin-bottom: 25px;
+            transition: color 0.3s ease;
+        }
+        
+        .service-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--secondary);
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .service-link i {
+            margin-left: 8px;
+            transition: transform 0.3s ease;
+        }
+        
+        .service-link:hover i {
+            transform: translateX(5px);
+        }
+        
+        /* About Section */
+        .about {
+            background: var(--primary);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .about::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 40%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1531058020387-3be344556be6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80') no-repeat center center/cover;
+            opacity: 0.2;
+        }
+        
+        .about-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .about-content h2 {
+            font-size: 3rem;
+            margin-bottom: 25px;
+            color: white;
+        }
+        
+        .about-content h2 span {
+            color: var(--secondary);
+        }
+        
+        .about-content p {
+            margin-bottom: 20px;
+            opacity: 0.9;
+            font-size: 1.1rem;
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-top: 50px;
+        }
+        
+        .stat-item {
+            text-align: center;
+            padding: 25px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+        
+        .stat-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: var(--secondary);
+            margin-bottom: 5px;
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        
+        .stat-text {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        /* Partner Section */
+        .partners {
+            background: var(--light);
+        }
+        
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 40px;
+            align-items: center;
+        }
+        
+        .partner-item {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 120px;
+            padding: 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .partner-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            border-color: var(--secondary);
+        }
+        
+        .partner-item img {
+            max-width: 100%;
+            max-height: 80px;
+            width: auto;
+            height: auto;
+            filter: grayscale(100%);
+            opacity: 0.7;
+            transition: all 0.3s ease;
+        }
+        
+        .partner-item:hover img {
+            filter: grayscale(0%);
+            opacity: 1;
+        }
+        
+        /* Testimonials Section */
+        .testimonials {
+            background: linear-gradient(rgba(0, 0, 0, 0.85), rgba(0, 0, 0, 0.85)), 
+                        url('https://images.unsplash.com/photo-1505373877841-8d25f7d46678?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') no-repeat center center/cover;
+            color: white;
+            text-align: center;
+            position: relative;
+        }
+        
+        .testimonials .section-title h2 {
+            color: white;
+        }
+        
+        .testimonials .section-title p {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .testimonials-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+        
+        .testimonial-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 40px;
+            text-align: left;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .testimonial-card::before {
+            content: '"';
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 8rem;
+            color: rgba(255, 255, 255, 0.05);
+            font-family: serif;
+            line-height: 1;
+        }
+        
+        .testimonial-rating {
+            color: var(--secondary);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .testimonial-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .author-img {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 20px;
+            border: 3px solid var(--secondary);
+        }
+        
+        .author-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .author-info h4 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+        
+        .author-info p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.95rem;
+        }
+        
+        /* Contact Section */
+        .contact {
+            background: var(--light);
+        }
+        
+        .contact-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+        
+        .contact-info h3 {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            color: var(--primary);
+        }
+        
+        .contact-details {
+            margin-bottom: 40px;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+        
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 20px;
+            flex-shrink: 0;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .contact-item:hover .contact-icon {
+            background: var(--secondary);
+            transform: rotate(10deg);
+        }
+        
+        .contact-text h4 {
+            font-size: 1.2rem;
+            margin-bottom: 8px;
+            color: var(--primary);
+        }
+        
+        .contact-text p, .contact-text a {
+            color: var(--dark-gray);
+            font-size: 1.05rem;
+        }
+        
+        .social-links {
+            display: flex;
+            margin-top: 30px;
+        }
+        
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            background: var(--gray);
+            color: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            transition: all 0.3s ease;
+            font-size: 1.1rem;
+        }
+        
+        .social-links a:hover {
+            background: var(--secondary);
+            color: white;
+            transform: translateY(-5px);
+        }
+        
+        .contact-form .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .contact-form label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        .contact-form input,
+        .contact-form textarea,
+        .contact-form select {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid var(--gray);
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            background: white;
+        }
+        
+        .contact-form input:focus,
+        .contact-form textarea:focus,
+        .contact-form select:focus {
+            border-color: var(--secondary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(255, 77, 0, 0.1);
+        }
+        
+        .contact-form textarea {
+            min-height: 180px;
+            resize: vertical;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 100px 0 0;
+            position: relative;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: linear-gradient(90deg, var(--secondary), var(--accent));
+        }
+        
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 50px;
+            margin-bottom: 70px;
+        }
+        
+        .footer-col h3 {
+            font-size: 1.4rem;
+            margin-bottom: 25px;
+            position: relative;
+            padding-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .footer-col h3::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background: var(--secondary);
+            bottom: 0;
+            left: 0;
+        }
+        
+        .footer-col p {
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 20px;
+            font-size: 1.05rem;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .footer-logo span {
+            color: var(--secondary);
+            font-weight: 800;
+        }
+        
+        .footer-links li {
+            margin-bottom: 15px;
+            list-style: none;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            display: block;
+            transition: all 0.3s ease;
+            font-size: 1.05rem;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+            padding-left: 8px;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .newsletter-form input {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1rem;
+        }
+        
+        .newsletter-form .btn {
+            width: 100%;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 1rem;
+            text-transform: none;
+            letter-spacing: normal;
+        }
+        
+        .footer-bottom {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 25px 0;
+            text-align: center;
+        }
+        
+        .footer-bottom p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.95rem;
+        }
+        
+        .footer-bottom a {
+            color: rgba(255, 255, 255, 0.7);
+            transition: all 0.3s ease;
+        }
+        
+        .footer-bottom a:hover {
+            color: var(--secondary);
+        }
+        
+        /* Back to Top Button */
+        .back-to-top {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            width: 60px;
+            height: 60px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            z-index: 999;
+            box-shadow: 0 10px 20px rgba(255, 77, 0, 0.3);
+        }
+        
+        .back-to-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top:hover {
+            background: var(--secondary-light);
+            transform: translateY(-5px);
+        }
+        
+        /* Live Chat Button */
+        .live-chat-btn {
+            position: fixed;
+            bottom: 40px;
+            right: 120px;
+            width: 60px;
+            height: 60px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            z-index: 999;
+            box-shadow: 0 10px 20px rgba(255, 77, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        
+        .live-chat-btn:hover {
+            background: var(--secondary-light);
+            transform: translateY(-5px);
+        }
+        
+        .live-chat-btn .badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--accent);
+            color: white;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+        
+        /* Chat Box */
+        .chat-box {
+            position: fixed;
+            bottom: 120px;
+            right: 40px;
+            width: 380px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transform: translateY(20px);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-box.active {
+            transform: translateY(0);
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .chat-header {
+            background: var(--primary);
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-header h3 {
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .chat-header h3 i {
+            margin-right: 10px;
+            color: var(--secondary);
+        }
+        
+        .chat-status {
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            margin-left: 5px;
+        }
+        
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4caf50;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .chat-close {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-close:hover {
+            transform: rotate(90deg);
+        }
+        
+        .chat-body {
+            height: 350px;
+            overflow-y: auto;
+            padding: 20px;
+            background: #f9f9f9;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-message {
+            margin-bottom: 15px;
+            max-width: 80%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-message.bot {
+            align-self: flex-start;
+        }
+        
+        .chat-message.user {
+            align-self: flex-end;
+        }
+        
+        .chat-message.staff {
+            align-self: flex-start;
+        }
+        
+        .chat-message-content {
+            padding: 12px 16px;
+            border-radius: 15px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+            position: relative;
+        }
+        
+        .chat-message.bot .chat-message-content {
+            background: var(--light);
+            border: 1px solid var(--gray);
+            color: var(--dark);
+            border-bottom-left-radius: 5px;
+        }
+        
+        .chat-message.staff .chat-message-content {
+            background: var(--primary-light);
+            color: white;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .chat-message.user .chat-message-content {
+            background: var(--secondary);
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .chat-time {
+            font-size: 0.7rem;
+            color: var(--dark-gray);
+            margin-top: 5px;
+        }
+        
+        .chat-message.user .chat-time {
+            text-align: right;
+        }
+        
+        .chat-message.bot .chat-time,
+        .chat-message.staff .chat-time {
+            text-align: left;
+        }
+        
+        .chat-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-right: 10px;
+            object-fit: cover;
+        }
+        
+        .chat-message-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+        
+        .chat-message-header.bot {
+            justify-content: flex-start;
+        }
+        
+        .chat-message-header.staff {
+            justify-content: flex-start;
+        }
+        
+        .chat-message-header.user {
+            justify-content: flex-end;
+        }
+        
+        .chat-sender-name {
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .chat-input-container {
+            padding: 15px;
+            border-top: 1px solid var(--gray);
+            background: white;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chat-input {
+            display: flex;
+            margin-bottom: 10px;
+        }
+        
+        .chat-input input {
+            flex: 1;
+            padding: 12px 15px;
+            border: 1px solid var(--gray);
+            border-radius: 30px;
+            outline: none;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-input input:focus {
+            border-color: var(--secondary);
+        }
+        
+        .chat-input button {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-input button:hover {
+            background: var(--secondary-light);
+        }
+        
+        .chat-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 5px;
+        }
+        
+        .chat-option-btn {
+            background: rgba(10, 10, 10, 0.05);
+            border: none;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-option-btn:hover {
+            background: rgba(10, 10, 10, 0.1);
+        }
+        
+        .chat-option-btn i {
+            margin-right: 5px;
+        }
+        
+        /* Contact Form in Chat */
+        .chat-contact-form {
+            display: none;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        
+        .chat-contact-form.active {
+            display: block;
+        }
+        
+        .chat-contact-form input,
+        .chat-contact-form textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.9rem;
+        }
+        
+        .chat-contact-form button {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-contact-form button:hover {
+            background: var(--secondary-light);
+        }
+        
+        /* Support Options Modal */
+        .support-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .support-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .support-modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            position: relative;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+        }
+        
+        .support-modal.active .support-modal-content {
+            transform: translateY(0);
+        }
+        
+        .support-modal-close {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark-gray);
+        }
+        
+        .support-modal-title {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .support-options {
+            display: grid;
+            gap: 15px;
+        }
+        
+        .support-option {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background: #f5f5f5;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .support-option:hover {
+            background: var(--secondary);
+            color: white;
+        }
+        
+        .support-option i {
+            font-size: 1.5rem;
+            margin-right: 15px;
+            width: 40px;
+            text-align: center;
+        }
+        
+        .support-option-text h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+        
+        .support-option-text p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 1200px) {
+            .hero h1 {
+                font-size: 3.8rem;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .about-container,
+            .contact-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .about::before {
+                width: 100%;
+                height: 40%;
+                top: auto;
+                bottom: 0;
+            }
+            
+            .about-content {
+                order: -1;
+            }
+            
+            .hero h1 {
+                font-size: 3.2rem;
+            }
+            
+            .section-title h2 {
+                font-size: 2.5rem;
+            }
+            
+            .testimonials-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-container {
+                padding: 0 20px;
+            }
+            
+            nav {
+                position: fixed;
+                top: 0;
+                left: -100%;
+                width: 80%;
+                max-width: 350px;
+                height: 100vh;
+                background: var(--primary);
+                transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+                z-index: 1000;
+                padding: 100px 40px 40px;
+                box-shadow: 5px 0 30px rgba(0, 0, 0, 0.2);
+            }
+            
+            nav.active {
+                left: 0;
+            }
+            
+            nav ul {
+                flex-direction: column;
+            }
+        
+            nav ul li {
+                margin: 0 0 25px 0;
+            }
+            
+            .mobile-menu-btn {
+                display: block;
+            }
+            
+            .hero {
+                min-height: 700px;
+            }
+            
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .hero p {
+                font-size: 1.1rem;
+            }
+            
+            .btn-container {
+                display: flex;
+                flex-direction: column;
+            }
+            
+            .btn-outline {
+                margin-left: 0;
+                margin-top: 20px;
+            }
+            
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .back-to-top,
+            .live-chat-btn {
+                width: 50px;
+                height: 50px;
+                font-size: 1.1rem;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .live-chat-btn {
+                right: 80px;
+            }
+            
+            .chat-box {
+                width: 320px;
+                right: 20px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .section {
+                padding: 80px 0;
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+            
+            .stats {
+                grid-template-columns: 1fr;
+            }
+            
+            .testimonial-text {
+                font-size: 1.1rem;
+            }
+            
+            .chat-box {
+                width: calc(100% - 40px);
+                right: 20px;
+                left: 20px;
+                bottom: 80px;
+            }
+            
+            .live-chat-btn {
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            .back-to-top {
+                display: none;
+            }
+        }
+        
+        /* Animation Classes */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+        
+        .fade-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .delay-1 {
+            transition-delay: 0.1s;
+        }
+        
+        .delay-2 {
+            transition-delay: 0.2s;
+        }
+        
+        .delay-3 {
+            transition-delay: 0.3s;
+        }
+        
+        .delay-4 {
+            transition-delay: 0.4s;
+        }
+        
+        .delay-5 {
+            transition-delay: 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container header-container">
+            <div class="logo">NEXA<span>Event</span></div>
+            <nav id="nav">
+                <ul>
+                    <li><a href="#home">Startseite</a></li>
+                    <li><a href="#services">Leistungen</a></li>
+                    <li><a href="#about">Über uns</a></li>
+                    <li><a href="#partners">Partner</a></li>
+                    <li><a href="#testimonials">Kundenstimmen</a></li>
+                    <li><a href="#contact">Kontakt</a></li>
+                </ul>
+            </nav>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <video autoplay muted loop class="hero-video">
+            <source src="https://assets.mixkit.co/videos/preview/mixkit-group-of-friends-partying-happily-4640-large.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        
+        <!-- Slideshow fallback -->
+        <img src="https://images.unsplash.com/photo-1540039155733-5bb30b53aa14?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" class="hero-slideshow" alt="Party Event">
+        <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" class="hero-slideshow" alt="Concert Lighting">
+        <img src="https://images.unsplash.com/photo-1531058020387-3be344556be6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80" class="hero-slideshow" alt="Event Technology">
+        
+        <div class="hero-content">
+            <h1 class="fade-in">Professionelle Eventtechnik <span>für herausragende Veranstaltungen</span></h1>
+            <p class="fade-in delay-1">NEXA Event Solutions bietet maßgeschneiderte technische Lösungen für Events jeder Größe - von Konzerten über Messen bis zu privaten Feiern.</p>
+            <div class="btn-container fade-in delay-2">
+                <a href="#contact" class="btn">Kontakt aufnehmen <i class="fas fa-arrow-right"></i></a>
+                <a href="#services" class="btn btn-outline">Unsere Services</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="section" id="services">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Unsere Kernkompetenzen</h2>
+                <p>Wir bieten ganzheitliche technische Lösungen für Ihre Veranstaltung - professionell, zuverlässig und innovativ.</p>
+            </div>
+            <div class="services-grid">
+                <div class="service-card fade-in delay-1">
+                    <div class="service-icon">
+                        <i class="fas fa-volume-up"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Professionelle Tontechnik</h3>
+                        <p>Hochwertige Beschallungssysteme für klaren Sound bei jeder Veranstaltung. Unsere Experten sorgen für perfekte Akustik.</p>
+                        <a href="#contact" class="service-link">Anfrage stellen <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="service-card fade-in delay-2">
+                    <div class="service-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Moderne Lichttechnik</h3>
+                        <p>Spektakuläre Lichtshows und atmosphärische Beleuchtung mit modernsten LED- und Moving-Head-Systemen.</p>
+                        <a href="#contact" class="service-link">Anfrage stellen <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="service-card fade-in delay-3">
+                    <div class="service-icon">
+                        <i class="fas fa-chess-board"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Individueller Bühnenbau</h3>
+                        <p>Maßgeschneiderte Bühnenkonzepte und sichere Konstruktionen nach Ihren spezifischen Anforderungen.</p>
+                        <a href="#contact" class="service-link">Anfrage stellen <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="service-card fade-in delay-4">
+                    <div class="service-icon">
+                        <i class="fas fa-video"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Professionelle Videotechnik</h3>
+                        <p>Live-Übertragungen, LED-Wände und Projektionen für beeindruckende visuelle Erlebnisse.</p>
+                        <a href="#contact" class="service-link">Anfrage stellen <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="service-card fade-in delay-5">
+                    <div class="service-icon">
+                        <i class="fas fa-truck"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Komplette Eventlogistik</h3>
+                        <p>Planung, Transport und Aufbau - wir übernehmen die gesamte technische Logistik Ihrer Veranstaltung.</p>
+                        <a href="#contact" class="service-link">Anfrage stellen <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+                <div class="service-card fade-in delay-1">
+                    <div class="service-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <div class="service-content">
+                        <h3>Technische Beratung</h3>
+                        <p>Individuelle Beratung und Planung für Ihre Veranstaltung - von der Konzeption bis zur Umsetzung.</p>
+                        <a href="#contact" class="service-link">Anfrage stellen <i class="fas fa-arrow-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="section about" id="about">
+        <div class="container">
+            <div class="about-container">
+                <div class="about-content fade-in">
+                    <h2>Ihr zuverlässiger Partner <span>für Eventtechnik</span></h2>
+                    <p>NEXA Event Solutions steht für höchste Qualität und Professionalität in der Veranstaltungstechnik. Mit über 18 Jahren Erfahrung haben wir uns als führender Anbieter für technische Eventlösungen etabliert.</p>
+                    <p>Unser Team besteht aus erfahrenen Technikern, kreativen Planern und zuverlässigen Logistikern. Wir setzen auf modernste Technik, höchste Sicherheitsstandards und ein kundenorientiertes Servicekonzept.</p>
+                    
+                    <div class="stats">
+                        <div class="stat-item fade-in delay-1">
+                            <div class="stat-number">18+</div>
+                            <div class="stat-text">Jahre Erfahrung</div>
+                        </div>
+                        <div class="stat-item fade-in delay-2">
+                            <div class="stat-number">750+</div>
+                            <div class="stat-text">Events pro Jahr</div>
+                        </div>
+                        <div class="stat-item fade-in delay-3">
+                            <div class="stat-number">100%</div>
+                            <div class="stat-text">Kundenzufriedenheit</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Partners Section -->
+    <section class="section partners" id="partners">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Unsere Partner</h2>
+                <p>Zusammenarbeit mit führenden Herstellern und Dienstleistern der Veranstaltungsbranche.</p>
+            </div>
+            
+            <div class="partners-grid fade-in delay-1">
+                <div class="partner-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/ad/Logo_des_Verbandes_der_Deutschen_Eventbranche.svg/1200px-Logo_des_Verbandes_der_Deutschen_Eventbranche.svg.png" alt="Eventverband Deutschland">
+                </div>
+                <div class="partner-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/MA-Lighting_Logo.svg/1200px-MA-Lighting_Logo.svg.png" alt="MA Lighting">
+                </div>
+                <div class="partner-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Martin_Professional_logo.svg/1200px-Martin_Professional_logo.svg.png" alt="Martin Professional">
+                </div>
+                <div class="partner-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Dolby_logo.svg/1200px-Dolby_logo.svg.png" alt="Dolby">
+                </div>
+                <div class="partner-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Pioneer_logo.svg/1200px-Pioneer_logo.svg.png" alt="Pioneer">
+                </div>
+                <div class="partner-item">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Sennheiser_logo_2015.svg/1200px-Sennheiser_logo_2015.svg.png" alt="Sennheiser">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="section testimonials" id="testimonials">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Kundenstimmen</h2>
+                <p>Das sagen unsere Kunden über die Zusammenarbeit mit NEXA Event Solutions.</p>
+            </div>
+            
+            <div class="testimonials-container fade-in delay-1">
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <div class="testimonial-text">
+                        "Die Zusammenarbeit mit NEXA Event Solutions war herausragend. Von der ersten Planung bis zur Umsetzung haben sie Professionalität und Kreativität bewiesen. Die Technik war perfekt auf unsere Bedürfnisse abgestimmt und das Team extrem zuverlässig. Unser Festival war ein voller Erfolg dank ihrer Unterstützung."
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-img">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Markus Weber">
+                        </div>
+                        <div class="author-info">
+                            <h4>Markus Weber</h4>
+                            <p>Eventmanager, Summer Beats Festival</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <div class="testimonial-text">
+                        "Wir arbeiten seit Jahren mit NEXA zusammen und sind jedes Mal aufs Neue begeistert. Die kreativen Lösungen und die perfekte Umsetzung machen jedes Event zu etwas Besonderem. Ihr technisches Know-how kombiniert mit künstlerischem Gespür ist einzigartig. Absolute Empfehlung!"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-img">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Sarah Müller">
+                        </div>
+                        <div class="author-info">
+                            <h4>Sarah Müller</h4>
+                            <p>Marketing Director, Tech Conference</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card">
+                    <div class="testimonial-rating">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <div class="testimonial-text">
+                        "Die technische Umsetzung unserer internationalen Konferenz durch NEXA war makellos. Jedes Detail wurde perfekt geplant und umgesetzt. Besonders beeindruckt hat uns die schnelle Reaktionszeit bei kurzfristigen Änderungswünschen. Wir werden definitiv wieder mit NEXA zusammenarbeiten!"
+                    </div>
+                    <div class="testimonial-author">
+                        <div class="author-img">
+                            <img src="https://randomuser.me/api/portraits/men/67.jpg" alt="Thomas Schmidt">
+                        </div>
+                        <div class="author-info">
+                            <h4>Thomas Schmidt</h4>
+                            <p>CEO, Global Business Summit</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="section contact" id="contact">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Kontaktieren Sie uns</h2>
+                <p>Wir beraten Sie gerne persönlich für Ihr nächstes Eventprojekt.</p>
+            </div>
+            
+            <div class="contact-container fade-in delay-1">
+                <div class="contact-info">
+                    <h3>So erreichen Sie uns</h3>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Adresse</h4>
+                                <p>Eventstraße 123<br>10115 Berlin</p>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Telefon</h4>
+                                <a href="tel:+4930123456789">+49 30 123 456 789</a>
+                            </div>
+                        </div>
+                        <div class="contact-item">
+                            <div class="contact-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-text">
+                                <h4>Email</h4>
+                                <a href="mailto:info@nexa-events.de">info@nexa-events.de</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <h3>Öffnungszeiten</h3>
+                    <p>Montag - Freitag: 8:00 - 19:00 Uhr<br>Samstag: Nach Vereinbarung<br>Sonntag: Geschlossen</p>
+                    
+                    <h3>Folgen Sie uns</h3>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Name *</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Telefon</label>
+                            <input type="tel" id="phone" name="phone">
+                        </div>
+                        <div class="form-group">
+                            <label for="service">Interessierter Service *</label>
+                            <select id="service" name="service" required>
+                                <option value="">Bitte auswählen</option>
+                                <option value="tontechnik">Tontechnik</option>
+                                <option value="lichttechnik">Lichttechnik</option>
+                                <option value="buehnenbau">Bühnenbau</option>
+                                <option value="videotechnik">Videotechnik</option>
+                                <option value="eventlogistik">Eventlogistik</option>
+                                <option value="beratung">Technische Beratung</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Ihre Nachricht *</label>
+                            <textarea id="message" name="message" required></textarea>
+                        </div>
+                        <button type="submit" class="btn">Nachricht senden <i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-container">
+            <div class="footer-col">
+                <a href="#" class="footer-logo">NEXA<span>Event</span></a>
+                <p>Ihr Partner für professionelle Veranstaltungstechnik und innovative Eventlösungen.</p>
+                <p>© 2023 NEXA Event Solutions. Alle Rechte vorbehalten.</p>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul class="footer-links">
+                    <li><a href="#home">Startseite</a></li>
+                    <li><a href="#services">Leistungen</a></li>
+                    <li><a href="#about">Über uns</a></li>
+                    <li><a href="#partners">Partner</a></li>
+                    <li><a href="#testimonials">Kundenstimmen</a></li>
+                    <li><a href="#contact">Kontakt</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Services</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Tontechnik</a></li>
+                    <li><a href="#">Lichttechnik</a></li>
+                    <li><a href="#">Bühnenbau</a></li>
+                    <li><a href="#">Videotechnik</a></li>
+                    <li><a href="#">Eventlogistik</a></li>
+                    <li><a href="#">Technische Beratung</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Newsletter</h3>
+                <p>Bleiben Sie informiert über unsere neuesten Projekte und Angebote.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Ihre Email-Adresse" required>
+                    <button type="submit" class="btn">Abonnieren</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <div class="container">
+                <p><a href="#">Impressum</a> | <a href="#">Datenschutz</a> | <a href="#">AGB</a> | <a href="#">Cookie-Einstellungen</a></p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <div class="back-to-top" id="backToTop">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <!-- Live Chat Button -->
+    <div class="live-chat-btn" id="liveChatBtn">
+        <i class="fas fa-comment-dots"></i>
+        <span class="badge">1</span>
+    </div>
+
+    <!-- Chat Box -->
+    <div class="chat-box" id="chatBox">
+        <div class="chat-header">
+            <h3><i class="fas fa-headset"></i> NEXA Support</h3>
+            <span class="chat-status"><span class="status-dot"></span> Online</span>
+            <button class="chat-close" id="chatClose"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <div class="chat-message bot">
+                <div class="chat-message-header bot">
+                    <img src="https://i.imgur.com/7kU3hHt.png" alt="NEXA Bot" class="chat-avatar">
+                    <span class="chat-sender-name">NEXA Bot</span>
+                </div>
+                <div class="chat-message-content">
+                    Hallo! Willkommen beim NEXA Support. Wie können wir Ihnen helfen? Wählen Sie eine Option oder stellen Sie uns direkt Ihre Frage.
+                </div>
+                <div class="chat-time">14:32</div>
+            </div>
+            <div class="chat-message bot">
+                <div class="chat-message-header bot">
+                    <img src="https://i.imgur.com/7kU3hHt.png" alt="NEXA Bot" class="chat-avatar">
+                    <span class="chat-sender-name">NEXA Bot</span>
+                </div>
+                <div class="chat-message-content">
+                    Sie können auch direkt mit einem unserer Mitarbeiter verbunden werden, wenn Sie spezielle Fragen haben.
+                </div>
+                <div class="chat-time">14:32</div>
+            </div>
+        </div>
+        <div class="chat-input-container">
+            <div class="chat-options">
+                <button class="chat-option-btn" data-option="technik"><i class="fas fa-lightbulb"></i> Technische Fragen</button>
+                <button class="chat-option-btn" data-option="angebot"><i class="fas fa-file-invoice-dollar"></i> Angebot anfordern</button>
+                <button class="chat-option-btn" data-option="mitarbeiter"><i class="fas fa-user-tie"></i> Mitarbeiter verbinden</button>
+                <button class="chat-option-btn" data-option="termin"><i class="fas fa-calendar-alt"></i> Termin vereinbaren</button>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="chatInput" placeholder="Schreiben Sie eine Nachricht...">
+                <button id="chatSend"><i class="fas fa-paper-plane"></i></button>
+            </div>
+            <div class="chat-contact-form" id="contactFormChat">
+                <input type="text" id="chatName" placeholder="Ihr Name" required>
+                <input type="email" id="chatEmail" placeholder="Ihre Email" required>
+                <input type="tel" id="chatPhone" placeholder="Ihre Telefonnummer">
+                <textarea id="chatMessage" placeholder="Ihre Nachricht" required></textarea>
+                <button type="button" id="chatFormSubmit">Absenden</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Support Options Modal -->
+    <div class="support-modal" id="supportModal">
+        <div class="support-modal-content">
+            <button class="support-modal-close" id="supportModalClose"><i class="fas fa-times"></i></button>
+            <h3 class="support-modal-title">Wie können wir Ihnen helfen?</h3>
+            <div class="support-options">
+                <div class="support-option" data-option="technik">
+                    <i class="fas fa-lightbulb"></i>
+                    <div class="support-option-text">
+                        <h4>Technische Fragen</h4>
+                        <p>Hilfe zu unseren Produkten und Dienstleistungen</p>
+                    </div>
+                </div>
+                <div class="support-option" data-option="angebot">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <div class="support-option-text">
+                        <h4>Angebot anfordern</h4>
+                        <p>Kostenlose Beratung und Angebotserstellung</p>
+                    </div>
+                </div>
+                <div class="support-option" data-option="mitarbeiter">
+                    <i class="fas fa-user-tie"></i>
+                    <div class="support-option-text">
+                        <h4>Mitarbeiter verbinden</h4>
+                        <p>Direkter Kontakt zu unseren Experten</p>
+                    </div>
+                </div>
+                <div class="support-option" data-option="termin">
+                    <i class="fas fa-calendar-alt"></i>
+                    <div class="support-option-text">
+                        <h4>Termin vereinbaren</h4>
+                        <p>Persönliches Beratungsgespräch vor Ort</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mobile Menu Toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const nav = document.getElementById('nav');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            nav.classList.toggle('active');
+            mobileMenuBtn.innerHTML = nav.classList.contains('active') ? 
+                '<i class="fas fa-times"></i>' : '<i class="fas fa-bars"></i>';
+        });
+        
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('#nav a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+                mobileMenuBtn.innerHTML = '<i class="fas fa-bars"></i>';
+            });
+        });
+        
+        // Header scroll effect
+        const header = document.getElementById('header');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+        
+        // Back to top button
+        const backToTop = document.getElementById('backToTop');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTop.classList.add('active');
+            } else {
+                backToTop.classList.remove('active');
+            }
+        });
+        
+        backToTop.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+        
+        // Scroll animations
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const fadeInOnScroll = () => {
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementTop < windowHeight - 100) {
+                    element.classList.add('active');
+                }
+            });
+        };
+        
+        window.addEventListener('scroll', fadeInOnScroll);
+        window.addEventListener('load', fadeInOnScroll);
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Form submission
+        const contactForm = document.getElementById('contactForm');
+        
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Here you would typically send the form data to a server
+            // For this example, we'll just show an alert
+            alert('Vielen Dank für Ihre Nachricht! Wir werden uns schnellstmöglich bei Ihnen melden.');
+            contactForm.reset();
+        });
+        
+        // Hero Slideshow
+        const heroSlides = document.querySelectorAll('.hero-slideshow');
+        let currentSlide = 0;
+        
+        function showSlide(n) {
+            heroSlides.forEach(slide => slide.classList.remove('active'));
+            heroSlides[n].classList.add('active');
+        }
+        
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % heroSlides.length;
+            showSlide(currentSlide);
+        }
+        
+        // Start slideshow if video is not supported
+        if (document.querySelector('.hero-video').error) {
+            showSlide(0);
+            setInterval(nextSlide, 5000);
+        }
+        
+        // Live Chat Functionality
+        const liveChatBtn = document.getElementById('liveChatBtn');
+        const chatBox = document.getElementById('chatBox');
+        const chatClose = document.getElementById('chatClose');
+        const chatBody = document.getElementById('chatBody');
+        const chatInput = document.getElementById('chatInput');
+        const chatSend = document.getElementById('chatSend');
+        const chatOptions = document.querySelectorAll('.chat-option-btn');
+        const supportModal = document.getElementById('supportModal');
+        const supportModalClose = document.getElementById('supportModalClose');
+        const supportOptions = document.querySelectorAll('.support-option');
+        const contactFormChat = document.getElementById('contactFormChat');
+        const chatFormSubmit = document.getElementById('chatFormSubmit');
+        
+        // Toggle chat box
+        liveChatBtn.addEventListener('click', () => {
+            chatBox.classList.toggle('active');
+        });
+        
+        chatClose.addEventListener('click', () => {
+            chatBox.classList.remove('active');
+        });
+        
+        // Support options modal
+        function openSupportModal() {
+            supportModal.classList.add('active');
+        }
+        
+        supportModalClose.addEventListener('click', () => {
+            supportModal.classList.remove('active');
+        });
+        
+        // Chat bot responses
+        const botResponses = {
+            greeting: [
+                "Vielen Dank für Ihre Nachricht. Einer unserer Mitarbeiter wird sich bald bei Ihnen melden.",
+                "Wir haben Ihre Anfrage erhalten und werden uns innerhalb der nächsten Stunde bei Ihnen melden.",
+                "Vielen Dank für Ihr Interesse an unseren Dienstleistungen. Wie können wir Ihnen weiterhelfen?"
+            ],
+            technik: [
+                "Für technische Fragen können Sie auch unsere FAQ-Seite besuchen: www.nexa-events.de/faq",
+                "Unser technischer Support ist von 8-20 Uhr erreichbar unter +49 30 123 456 789.",
+                "Bitte beschreiben Sie Ihr technisches Problem genauer, damit wir Ihnen optimal helfen können."
+            ],
+            angebot: [
+                "Für ein individuelles Angebot benötigen wir einige Details zu Ihrer Veranstaltung. Sie können unser Online-Formular nutzen oder wir rufen Sie zurück.",
+                "Ein Mitarbeiter wird sich mit Ihnen in Verbindung setzen, um ein maßgeschneidertes Angebot zu erstellen.",
+                "Bitte teilen Sie uns mit, für welchen Service Sie ein Angebot benötigen und den geplanten Termin."
+            ],
+            mitarbeiter: [
+                "Ich verbinde Sie jetzt mit einem unserer Experten. Bitte haben Sie einen Moment Geduld...",
+                "Einer unserer Mitarbeiter wird sich gleich bei Ihnen melden. Vielen Dank für Ihre Geduld.",
+                "Ich leite Ihre Anfrage an den zuständigen Kollegen weiter. Sie erhalten in Kürze Rückmeldung."
+            ],
+            termin: [
+                "Für eine Terminvereinbarung können Sie unseren Online-Kalender nutzen: www.nexa-events.de/termine",
+                "Ein Mitarbeiter wird sich mit Ihnen in Verbindung setzen, um einen passenden Termin zu finden.",
+                "Bitte teilen Sie uns Ihren Wunschtermin und den gewünschten Beratungsort mit."
+            ],
+            contact: [
+                "Vielen Dank für Ihre Kontaktdaten. Wir werden uns schnellstmöglich bei Ihnen melden.",
+                "Ihre Anfrage wurde erfolgreich übermittelt. Unser Team bearbeitet diese nun.",
+                "Danke für Ihre Kontaktaufnahme. Sie erhalten in Kürze eine Bestätigungsemail."
+            ]
+        };
+        
+        // Staff members data
+        const staffMembers = [
+            {
+                name: "Michael Bauer",
+                position: "Technischer Support",
+                avatar: "https://randomuser.me/api/portraits/men/42.jpg",
+                response: "Hallo, hier ist Michael vom technischen Support. Wie kann ich Ihnen helfen?"
+            },
+            {
+                name: "Sarah Meier",
+                position: "Vertrieb & Beratung",
+                avatar: "https://randomuser.me/api/portraits/women/63.jpg",
+                response: "Guten Tag, ich bin Sarah aus dem Vertrieb. Womit kann ich Ihnen weiterhelfen?"
+            },
+            {
+                name: "Thomas Schmidt",
+                position: "Eventplanung",
+                avatar: "https://randomuser.me/api/portraits/men/32.jpg",
+                response: "Hallo, hier ist Thomas von der Eventplanung. Wie kann ich Sie unterstützen?"
+            }
+        ];
+        
+        // Send message function
+        function sendMessage() {
+            const message = chatInput.value.trim();
+            if (message === '') return;
+            
+            // Add user message
+            addMessage(message, 'user');
+            chatInput.value = '';
+            
+            // Simulate typing indicator
+            setTimeout(() => {
+                // Add bot response
+                const responses = botResponses.greeting;
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                addMessage(randomResponse, 'bot');
+                
+                // Scroll to bottom
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 1000);
+        }
+        
+        // Handle option selection
+        function handleOptionSelection(option) {
+            let message = "";
+            switch(option) {
+                case 'technik':
+                    message = "Ich habe eine Frage zur Technik";
+                    break;
+                case 'angebot':
+                    message = "Ich möchte ein Angebot anfordern";
+                    break;
+                case 'mitarbeiter':
+                    message = "Ich möchte mit einem Mitarbeiter sprechen";
+                    break;
+                case 'termin':
+                    message = "Ich möchte einen Termin vereinbaren";
+                    break;
+            }
+            
+            // Add user message
+            addMessage(message, 'user');
+            
+            // Simulate typing indicator
+            setTimeout(() => {
+                // Add bot response
+                const responses = botResponses[option];
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                addMessage(randomResponse, 'bot');
+                
+                // If connecting to staff or requesting offer, show contact form
+                if (option === 'mitarbeiter' || option === 'angebot' || option === 'termin') {
+                    setTimeout(() => {
+                        contactFormChat.classList.add('active');
+                    }, 500);
+                }
+                
+                // Scroll to bottom
+                chatBody.scrollTop = chatBody.scrollHeight;
+                
+                // If connecting to staff, show staff message after delay
+                if (option === 'mitarbeiter') {
+                    setTimeout(() => {
+                        const randomStaff = staffMembers[Math.floor(Math.random() * staffMembers.length)];
+                        addStaffMessage(randomStaff);
+                    }, 2000);
+                }
+            }, 1000);
+        }
+        
+        // Add staff message
+        function addStaffMessage(staff) {
+            const now = new Date();
+            const timeString = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message staff`;
+            
+            const headerDiv = document.createElement('div');
+            headerDiv.className = 'chat-message-header staff';
+            
+            const avatarImg = document.createElement('img');
+            avatarImg.src = staff.avatar;
+            avatarImg.alt = staff.name;
+            avatarImg.className = 'chat-avatar';
+            
+            const nameSpan = document.createElement('span');
+            nameSpan.className = 'chat-sender-name';
+            nameSpan.textContent = staff.name;
+            
+            headerDiv.appendChild(avatarImg);
+            headerDiv.appendChild(nameSpan);
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'chat-message-content';
+            contentDiv.textContent = staff.response;
+            
+            const timeDiv = document.createElement('div');
+            timeDiv.className = 'chat-time';
+            timeDiv.textContent = timeString;
+            
+            messageDiv.appendChild(headerDiv);
+            messageDiv.appendChild(contentDiv);
+            messageDiv.appendChild(timeDiv);
+            
+            chatBody.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+        
+        // Add message to chat
+        function addMessage(text, sender) {
+            const now = new Date();
+            const timeString = now.getHours() + ':' + (now.getMinutes() < 10 ? '0' : '') + now.getMinutes();
+            
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${sender}`;
+            
+            // Add header for bot messages
+            if (sender === 'bot') {
+                const headerDiv = document.createElement('div');
+                headerDiv.className = 'chat-message-header bot';
+                
+                const avatarImg = document.createElement('img');
+                avatarImg.src = 'https://i.imgur.com/7kU3hHt.png';
+                avatarImg.alt = 'NEXA Bot';
+                avatarImg.className = 'chat-avatar';
+                
+                const nameSpan = document.createElement('span');
+                nameSpan.className = 'chat-sender-name';
+                nameSpan.textContent = 'NEXA Bot';
+                
+                headerDiv.appendChild(avatarImg);
+                headerDiv.appendChild(nameSpan);
+                messageDiv.appendChild(headerDiv);
+            }
+            
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'chat-message-content';
+            contentDiv.textContent = text;
+            
+            const timeDiv = document.createElement('div');
+            timeDiv.className = 'chat-time';
+            timeDiv.textContent = timeString;
+            
+            messageDiv.appendChild(contentDiv);
+            messageDiv.appendChild(timeDiv);
+            
+            chatBody.appendChild(messageDiv);
+            
+            // Scroll to bottom
+            chatBody.scrollTop = chatBody.scrollHeight;
+        }
+        
+        // Handle contact form submission in chat
+        chatFormSubmit.addEventListener('click', () => {
+            const name = document.getElementById('chatName').value.trim();
+            const email = document.getElementById('chatEmail').value.trim();
+            const phone = document.getElementById('chatPhone').value.trim();
+            const message = document.getElementById('chatMessage').value.trim();
+            
+            if (name === '' || email === '' || message === '') {
+                alert('Bitte füllen Sie alle erforderlichen Felder aus.');
+                return;
+            }
+            
+            // In a real application, you would send this data to your server
+            // For this example, we'll just show a confirmation message
+            contactFormChat.classList.remove('active');
+            
+            setTimeout(() => {
+                const responses = botResponses.contact;
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                addMessage(randomResponse, 'bot');
+                
+                // Clear form
+                document.getElementById('chatName').value = '';
+                document.getElementById('chatEmail').value = '';
+                document.getElementById('chatPhone').value = '';
+                document.getElementById('chatMessage').value = '';
+                
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 500);
+        });
+        
+        // Event listeners for chat options
+        chatOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const optionType = option.getAttribute('data-option');
+                handleOptionSelection(optionType);
+            });
+        });
+        
+        // Event listeners for support options
+        supportOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                const optionType = option.getAttribute('data-option');
+                supportModal.classList.remove('active');
+                handleOptionSelection(optionType);
+            });
+        });
+        
+        // Send message on button click or enter key
+        chatSend.addEventListener('click', sendMessage);
+        
+        chatInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+        
+        // Open support modal when chat is opened
+        liveChatBtn.addEventListener('click', () => {
+            if (chatBox.classList.contains('active')) {
+                setTimeout(openSupportModal, 300);
+            }
+        });
+    </script>
+</body>
+</html>
